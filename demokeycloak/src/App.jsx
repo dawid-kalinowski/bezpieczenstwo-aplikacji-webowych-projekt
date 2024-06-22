@@ -1,10 +1,32 @@
+import React, { useEffect } from "react";
 import Protected from "./components/Protected";
 import Public from "./components/Public";
+import AdminPanel from "./components/AdminPanel";
 
 import useAuth from "./hooks/useAuth";
-function App() {
-  const isLogin = useAuth();
-  return isLogin ? <Protected/> : <Public/>;
-}
 
-export default App
+const App = () => {
+  const { isLogin, userRoles } = useAuth();
+
+  const isAdmin = userRoles.includes("admin");
+
+  useEffect(() => {
+      console.log("Role użytkownika:", userRoles);
+  }, [userRoles]);
+
+  return (
+      <div>
+          {isLogin ? (
+              isAdmin ? (
+                  <AdminPanel />
+              ) : (
+                  <Protected />
+              )
+          ) : (
+              <Public />
+          )}
+      </div>
+  );
+};
+
+export default App;
