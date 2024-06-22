@@ -1,7 +1,12 @@
+import Protected from "./components/Protected";
+import Public from "./components/Public";
+
+import useAuth from "./hooks/useAuth";
 function App() {
-  return (
-    <div>Keycloaczek</div>
-  )
+  const isLogin = useAuth();
+  return isLogin ? <Protected/> : <Public/>;
 }
 
 export default App
+
+
