@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
 const OAuth2Strategy = require('passport-oauth2').Strategy;
+const path = require('path');
 
 const app = express();
 
@@ -32,12 +33,10 @@ passport.use(new OAuth2Strategy({
   return done(null, profile);
 }));
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.get('/', (req, res) => {
-  res.send(`
-    <form action="/auth/github" method="get">
-      <button type="submit">ŚCIŚLE TAJNE!</button>
-    </form>
-  `);
+  res.sendFile(path.join(__dirname, '/views/index.html'));
 });
 
 app.get('/auth/github', passport.authenticate('oauth2'));
@@ -47,6 +46,7 @@ app.get('/auth/callback', passport.authenticate('oauth2', {
   failureRedirect: '/'
 }));
 
+
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
@@ -55,7 +55,7 @@ function ensureAuthenticated(req, res, next) {
 }
 
 app.get('/api/protected', ensureAuthenticated, (req, res) => {
-  res.send('Oto ściśle tajna treść!');
+  res.sendFile(path.join(__dirname, '/views/protected.html'));
 });
 
 app.get('/logout', (req, res) => {

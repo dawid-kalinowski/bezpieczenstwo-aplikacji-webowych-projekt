@@ -1,0 +1,43 @@
+body {
+    background-color: #ffd700; /* kolorowe tło (żółte) */
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative; /* konieczne do animacji przycisku */
+  }
+  
+  button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    bottom: 20px; /* ustawienie guzika na dole strony */
+    left: 50%; /* ustawienie guzika na środku strony */
+    transform: translateX(-50%);
+    animation: floatButton 3s ease-in-out infinite; /* animacja przycisku */
+  }
+  
+  @keyframes floatButton {
+    0% {
+      transform: translateX(-50%) translateY(0);
+    }
+    50% {
+      transform: translateX(-50%) translateY(-10px);
+    }
+    100% {
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+  
+  .meme {
+    max-width: 100%;
+    margin-top: 20px;
+  }
+  
