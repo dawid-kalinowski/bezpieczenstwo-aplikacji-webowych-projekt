@@ -1,8 +1,10 @@
-import React, {useEffect, useRef} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 
 const Protected = () => {
     const isRun = useRef(false);
+
+    const [data, setData] = useState(null)
 
     useEffect(() => {
         if (isRun.current) return;
@@ -11,10 +13,10 @@ const Protected = () => {
 
         axios
         .get("/documents")
-        .then((res) => console.log(res.data))
+        .then((res) => setData(res.data))
         .catch((err) => console.error(err));
     }, []);
-  return <div>Protected</div>;
+  return data ? <>{data.map((rec, i) => (<h3 key={i}>{rec}</h3>))}</> : <div> Protected</div>;
 };
 
 export default Protected;
