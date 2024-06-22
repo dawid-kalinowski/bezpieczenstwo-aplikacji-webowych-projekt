@@ -14,12 +14,9 @@ const useAuth = () => {
     const [isLogin, setLogin] = useState(false);
 
     useEffect(() => {
-
         if (isRun.current) return;
 
         isRun.current = true;
-
-
           client
           .init({
             onLoad: "login-required",
