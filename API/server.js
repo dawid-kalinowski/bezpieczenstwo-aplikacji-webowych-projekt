@@ -5,50 +5,64 @@ const OAuth2Strategy = require('passport-oauth2').Strategy;
 
 const app = express();
 
-// Konfiguracja sesji
 app.use(session({
   secret: 'secret_key',
   resave: false,
   saveUninitialized: true
 }));
 
-// Inicjalizacja Passport
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Konfiguracja strategii OAuth 2.0 (np. dla GitHub OAuth)
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
 passport.use(new OAuth2Strategy({
   authorizationURL: 'https://github.com/login/oauth/authorize',
   tokenURL: 'https://github.com/login/oauth/access_token',
-  clientID: YOUR_CLIENT_ID,
-  clientSecret: YOUR_CLIENT_SECRET,
+  clientID: 'Ov23li3w4wOWD4GL0Dsb',
+  clientSecret: '2c7ee70f41b4d9041e62303af1209463736dd7b0',
   callbackURL: 'http://localhost:3000/auth/callback'
 }, (accessToken, refreshToken, profile, done) => {
-  // Przetwarzanie profilu użytkownika (opcjonalne)
   return done(null, profile);
 }));
 
-// Definicja endpointów aplikacji
 app.get('/', (req, res) => {
-  res.send('Strona główna aplikacji');
+  res.send(`
+    <form action="/auth/github" method="get">
+      <button type="submit">ŚCIŚLE TAJNE!</button>
+    </form>
+  `);
 });
 
-// Endpoint autoryzacji
 app.get('/auth/github', passport.authenticate('oauth2'));
 
-// Callback po autoryzacji
 app.get('/auth/callback', passport.authenticate('oauth2', {
-  successRedirect: '/',
-  failureRedirect: '/login'
+  successRedirect: '/api/protected',
+  failureRedirect: '/'
 }));
 
-// Endpoint do wylogowania
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/login');
+}
+
+app.get('/api/protected', ensureAuthenticated, (req, res) => {
+  res.send('Oto ściśle tajna treść!');
+});
+
 app.get('/logout', (req, res) => {
   req.logout();
   res.redirect('/');
 });
 
-// Uruchomienie serwera
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Serwer działa na porcie ${PORT}`);
