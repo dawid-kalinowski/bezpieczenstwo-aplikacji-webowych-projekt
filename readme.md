@@ -1,3 +1,6 @@
+## Dawid Kalinowski, grupa 4
+Aplikacja keycloak to prosty serwis, który po autentykacji poprzez keycloak, wysyła nas na podstronę która wyświetla pewien tekst. (zabezpieczenie frontendu).  
+Aplikacja, którą nazwałem "API", to aplikacja, która po autentykacji OAuth 2.0 za pośrednictwem serwisu GitHub, pozwala nam skorzystać z podanego endpointu. W tym przypadku endpoint ten zwraca zwykłą stronę wyświetlającą dowolną informację. (zabezpieczenie backendu).    
 # Aplikacja keycloak
 Docker image ze skonfigurowanym realmem w keycloak:  https://hub.docker.com/repository/docker/fjlgnrejlgbtrjl/keycloak/general 
 Keycloack powinien działać na porcie 4000 
